@@ -1,0 +1,37 @@
+{
+  "timestamp": "2025-02-25 14:39:19",
+  "feature_type": "lag",
+  "description": "滞后特征，周期：[1, 2, 3]",
+  "columns": [
+    "date",
+    "power",
+    "temperature",
+    "hour",
+    "day",
+    "month",
+    "year",
+    "dayofweek",
+    "quarter",
+    "hour_sin",
+    "hour_cos",
+    "month_sin",
+    "month_cos",
+    "dayofweek_sin",
+    "dayofweek_cos",
+    "is_weekend",
+    "is_month_start",
+    "is_month_end",
+    "power_lag_1",
+    "power_lag_2",
+    "power_lag_3",
+    "temperature_lag_1",
+    "temperature_lag_2",
+    "temperature_lag_3"
+  ],
+  "shape": [
+    721,
+    24
+  ],
+  "created_by": "zlbbbb",
+  "feature_info": {}
+}

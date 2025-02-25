@@ -1,0 +1,31 @@
+{
+  "timestamp": "2025-02-25 14:39:19",
+  "feature_type": "time",
+  "description": "时间特征，包含基础和周期性特征",
+  "columns": [
+    "date",
+    "power",
+    "temperature",
+    "hour",
+    "day",
+    "month",
+    "year",
+    "dayofweek",
+    "quarter",
+    "hour_sin",
+    "hour_cos",
+    "month_sin",
+    "month_cos",
+    "dayofweek_sin",
+    "dayofweek_cos",
+    "is_weekend",
+    "is_month_start",
+    "is_month_end"
+  ],
+  "shape": [
+    721,
+    18
+  ],
+  "created_by": "zlbbbb",
+  "feature_info": {}
+}

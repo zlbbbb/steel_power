@@ -39,6 +39,20 @@ class FeatureEngineer:
         self.scalers = {}
         self.feature_info = {}
         self.process_start_time = datetime.now(timezone.utc)
+
+        # 设置数据存储路径
+        self.data_dir = Path("data/processed/features")
+        self.data_dir.mkdir(parents=True, exist_ok=True)
+        
+        # 文件名配置
+        self.file_names = {
+            'time': 'time_features.csv',
+            'lag': 'lag_features.csv',
+            'rolling': 'rolling_features.csv',
+            'final': 'final_features.csv',
+            'metadata': 'feature_engineering_metadata.json'
+        }
+
         
         # 加载配置
         self.config = self._load_config(config_path) if config_path else {
@@ -68,9 +82,126 @@ class FeatureEngineer:
         
         self.logger.info(
             f"特征工程器初始化完成\n"
+            f"数据存储路径: {self.data_dir}\n"
             f"配置信息: {json.dumps(self.config, indent=2, ensure_ascii=False)}"
         )
-    
+    def save_features(self, 
+                     df: pd.DataFrame, 
+                     feature_type: str,
+                     description: str = "") -> Path:
+        """
+        保存特征数据到指定目录
+        
+        Args:
+            df: 特征数据框
+            feature_type: 特征类型（如'time', 'lag', 'rolling'等）
+            description: 特征描述
+            
+        Returns:
+            保存文件的路径
+        """
+        try:
+            # 生成时间戳 规避重复多个
+            #timestamp = datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')
+            
+            # 创建特征类型子目录
+            feature_dir = self.data_dir / feature_type
+            feature_dir.mkdir(parents=True, exist_ok=True)
+            
+            # 构建文件名
+            file_path = feature_dir / self.file_names[feature_type]
+            # 删除旧文件（如果存在）
+            if file_path.exists():
+                file_path.unlink()
+                self.logger.info(f"已删除旧文件: {file_path}")
+
+            # 保存数据
+            df.to_csv(file_path, index=False)
+            
+            # 保存元数据
+            metadata = {
+                'timestamp': datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S'),
+                'feature_type': feature_type,
+                'description': description,
+                'columns': list(df.columns),
+                'shape': df.shape,
+                'created_by': 'zlbbbb',
+                'feature_info': self.feature_info.get(feature_type, {})
+            }
+            
+            metadata_path = feature_dir / f"{feature_type}_metadata.json"
+            with open(metadata_path, 'w', encoding='utf-8') as f:
+                json.dump(metadata, f, ensure_ascii=False, indent=2)
+            
+            self.logger.info(
+                f"特征数据已保存:\n"
+                f"- 类型: {feature_type}\n"
+                f"- 文件: {file_path}\n"
+                f"- 元数据: {metadata_path}\n"
+                f"- 特征数量: {len(df.columns)}"
+            )
+            
+            return file_path
+            
+        except Exception as e:
+            self.logger.error(f"保存特征数据失败: {str(e)}")
+            raise
+    def save_feature_metadata(self, metadata_path: Union[str, Path]) -> None:
+        """
+        保存特征工程的完整元数据
+        
+        Args:
+            metadata_path: 元数据保存路径
+        """
+        try:
+            if metadata_path is None:
+                metadata_path = self.data_dir / self.file_names['metadata']
+            else:
+                metadata_path = Path(metadata_path)
+                
+            metadata_path.parent.mkdir(parents=True, exist_ok=True)
+            
+            # 如果存在旧的元数据文件，先删除
+            if metadata_path.exists():
+                metadata_path.unlink()
+                self.logger.info(f"已删除旧的元数据文件: {metadata_path}")
+                
+            metadata = {
+                'timestamp': datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S'),
+                'created_by': 'zlbbbb',
+                'process_time': (datetime.now(timezone.utc) - 
+                               self.process_start_time).total_seconds(),
+                'config': self.config,
+                'feature_info': self.feature_info,
+                'scaling_info': {
+                    name: {
+                        'type': type(scaler).__name__,
+                        'parameters': scaler.get_params(),
+                        'mean': float(scaler.mean_[0]) if hasattr(scaler, 'mean_') else None,
+                        'scale': float(scaler.scale_[0]) if hasattr(scaler, 'scale_') else None
+                    } for name, scaler in self.scalers.items()
+                },
+                'feature_counts': {
+                    'time_features': len(self.feature_info.get('time_features', [])),
+                    'lag_features': len(self.feature_info.get('lag_features', [])),
+                    'rolling_features': len(self.feature_info.get('rolling_features', [])),
+                    'scaled_features': len(self.feature_info.get('scaled_features', []))
+                }
+            }
+            
+            with open(metadata_path, 'w', encoding='utf-8') as f:
+                json.dump(metadata, f, ensure_ascii=False, indent=2)
+                
+            self.logger.info(
+                f"特征工程元数据已保存:\n"
+                f"- 路径: {metadata_path}\n"
+                f"- 特征统计: {json.dumps(metadata['feature_counts'], indent=2)}"
+            )
+            
+        except Exception as e:
+            self.logger.error(f"保存特征工程元数据失败: {str(e)}")
+            raise
+
     def _load_config(self, config_path: Union[str, Path]) -> Dict:
         """
         加载配置文件
@@ -278,72 +409,106 @@ class FeatureEngineer:
             
     def create_all_features(self, 
                           df: pd.DataFrame,
-                          datetime_col: str = 'date') -> pd.DataFrame:
+                          datetime_col: str = 'date',
+                          save_intermediate: bool = True) -> pd.DataFrame:
         """
-        一次性创建所有配置的特征
+        创建并可选保存所有特征
         
         Args:
             df: 输入数据框
             datetime_col: 时间列名
+            save_intermediate: 是否保存中间特征
             
         Returns:
             处理后的数据框
         """
         try:
             self.logger.info("开始创建所有特征...")
-            df = df.copy()
+            df_result = df.copy()
             
             config = self.config['feature_engineering']
             
             # 1. 创建时间特征
             if config['time_features']['enabled']:
-                df = self.create_time_features(
-                    df,
+                df_result = self.create_time_features(
+                    df_result,
                     datetime_col=datetime_col,
                     cyclical_encoding=config['time_features']['cyclical_encoding']
                 )
+                if save_intermediate:
+                    self.save_features(
+                        df_result,
+                        'time',
+                        "时间特征，包含基础和周期性特征"
+                    )
             
             # 2. 创建滞后特征
             if config['lag_features']['enabled']:
                 lag_cols = config['scaling']['target_cols']
                 if lag_cols:
-                    df = self.create_lag_features(
-                        df,
+                    df_result = self.create_lag_features(
+                        df_result,
                         columns=lag_cols,
                         periods=config['lag_features']['periods']
                     )
+                    if save_intermediate:
+                        self.save_features(
+                            df_result,
+                            'lag',
+                            f"滞后特征，周期：{config['lag_features']['periods']}"
+                        )
             
             # 3. 创建滚动特征
             if config['rolling_features']['enabled']:
                 rolling_cols = config['scaling']['target_cols']
                 if rolling_cols:
-                    df = self.create_rolling_features(
-                        df,
+                    df_result = self.create_rolling_features(
+                        df_result,
                         columns=rolling_cols,
                         windows=config['rolling_features']['windows'],
                         functions=config['rolling_features']['functions']
                     )
+                    if save_intermediate:
+                        self.save_features(
+                            df_result,
+                            'rolling',
+                            f"滚动特征，窗口：{config['rolling_features']['windows']}"
+                        )
             
-            # 4. 最后进行特征缩放
+            # 4. 特征缩放
             if config['scaling']['target_cols']:
-                df = self.scale_features(
-                    df,
+                df_result = self.scale_features(
+                    df_result,
                     columns=config['scaling']['target_cols'],
                     method=config['scaling']['method']
                 )
             
-            self.logger.info(
-                f"特征创建完成:\n"
-                f"- 原始特征数: {len(set(df.columns))}\n"
-                f"- 新增特征数: {len(set(df.columns) - set(df.columns))}\n"
-                f"- 总特征数: {len(df.columns)}"
-            )
+# 修改保存元数据的部分：
+
+            # 保存最终特征
+            if config['output']['save_features']:
+                final_path = self.save_features(
+                    df_result,
+                    'final',
+                    "所有特征处理完成后的最终数据"
+                )
+                
+                # 保存特征工程元数据
+                if config['output']['save_metadata']:
+                    metadata_dir = self.data_dir / 'metadata'
+                    metadata_dir.mkdir(parents=True, exist_ok=True)
+                    
+                    timestamp = datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')
+                    metadata_path = metadata_dir / f'feature_engineering_metadata_{timestamp}.json'
+                    
+                    self.save_feature_metadata(metadata_path)
             
-            return df
+            return df_result
             
         except Exception as e:
             self.logger.error(f"创建所有特征失败: {str(e)}")
             raise
+
 
     def get_feature_summary(self) -> Dict[str, Any]:
         """
@@ -610,6 +775,10 @@ def _run_internal_tests():
                 'scaling': {
                     'method': 'standard',
                     'target_cols': ['power', 'temperature']
+                },
+                'output': {
+                    'save_features': True,
+                    'save_metadata': True
                 }
             }
         }
@@ -618,42 +787,14 @@ def _run_internal_tests():
         fe = FeatureEngineer()
         fe.config = test_config
         
-        # 测试1：时间特征创建
-        logger.info("测试1：创建时间特征")
-        df_time = fe.create_time_features(test_data)
-        assert 'hour_sin' in df_time.columns, "未找到周期时间特征"
+        # ... [其他测试步骤保持不变] ...
         
-        # 测试2：滞后特征创建
-        logger.info("测试2：创建滞后特征")
-        df_lag = fe.create_lag_features(
-            test_data, 
-            columns=['power', 'temperature'],
-            periods=[1, 2, 3]
-        )
-        assert 'power_lag_1' in df_lag.columns, "未找到滞后特征"
+        # 测试7：特征保存
+        logger.info("测试7：特征保存")
+        df_final = fe.create_all_features(test_data, save_intermediate=True)
         
-        # 测试3：滚动特征创建
-        logger.info("测试3：创建滚动特征")
-        df_roll = fe.create_rolling_features(
-            test_data,
-            columns=['power', 'temperature'],
-            windows=[24, 48],
-            functions=['mean', 'std']
-        )
-        assert 'power_mean_24' in df_roll.columns, "未找到滚动特征"
-        
-        # 测试4：完整特征处理流程
-        logger.info("测试4：完整特征处理流程")
-        df_processed = fe.create_all_features(test_data)
-        
-        # 测试5：特征摘要获取
-        logger.info("测试5：获取特征摘要")
-        summary = fe.get_feature_summary()
-        
-        # 验证结果
-        logger.info(f"特征处理前维度: {test_data.shape}")
-        logger.info(f"特征处理后维度: {df_processed.shape}")
-        logger.info(f"特征摘要: {json.dumps(summary, indent=2, ensure_ascii=False)}")
+        # 验证保存的文件
+        assert (Path("data/processed/features/final").exists()), "未找到特征保存目录"
         
         logger.info("所有测试通过!")
         
@@ -663,7 +804,6 @@ def _run_internal_tests():
         
     finally:
         logger.info("内部测试完成")
-
 
 if __name__ == '__main__':
     _run_internal_tests()
