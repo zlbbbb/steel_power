@@ -1,0 +1,172 @@
+{
+  
+  "data_info": {
+    "rows": 35040,
+    "columns": 33,
+    "column_names": [
+      "date",
+      "Usage_kWh",
+      "Lagging_Current_Reactive.Power_kVarh",
+      "Leading_Current_Reactive_Power_kVarh",
+      "CO2(tCO2)",
+      "Lagging_Current_Power_Factor",
+      "Leading_Current_Power_Factor",
+      "NSM",
+      "WeekStatus_Weekday",
+      "WeekStatus_Weekend",
+      "Day_of_week_Monday",
+      "Day_of_week_Tuesday",
+      "Day_of_week_Wednesday",
+      "Day_of_week_Thursday",
+      "Day_of_week_Friday",
+      "Day_of_week_Saturday",
+      "Day_of_week_Sunday",
+      "Load_Type_Light_Load",
+      "Load_Type_Medium_Load",
+      "Load_Type_Maximum_Load",
+      "hour",
+      "minute",
+      "day_of_week",
+      "day_of_month",
+      "month",
+      "is_weekend",
+      "is_business_hour",
+      "hour_sin",
+      "hour_cos",
+      "month_sin",
+      "month_cos",
+      "day_of_week_sin",
+      "day_of_week_cos"
+    ],
+    "memory_usage": 7.919891357421875,
+    "date_range": {
+      "start": "01/01/2018 00:00",
+      "end": "31/12/2018 23:45"
+    }
+  },
+  "preprocessing_info": {
+    "config": {
+      "handle_missing": "interpolate",
+      "outlier_detection": true,
+      "outlier_method": "IQR",
+      "normalization": "standard",
+      "steps": [
+        {
+          "name": "handle_missing_values",
+          "enabled": true,
+          "order": 1
+        },
+        {
+          "name": "handle_outliers",
+          "enabled": true,
+          "order": 2
+        },
+        {
+          "name": "normalize_features",
+          "enabled": true,
+          "order": 3
+        },
+        {
+          "name": "encode_categories",
+          "enabled": true,
+          "order": 4
+        }
+      ],
+      "validation": {
+        "check_missing": true,
+        "check_duplicates": true,
+        "check_data_types": true,
+        "check_value_ranges": true,
+        "check_categorical_values": true
+      }
+    },
+    "processing_time": 2.034417,
+    "scalers": {
+      "Usage_kWh": {
+        "mean": [
+          27.309686929223744
+        ],
+        "scale": [
+          33.206012011866946
+        ]
+      },
+      "Lagging_Current_Reactive.Power_kVarh": {
+        "mean": [
+          12.79063984018265
+        ],
+        "scale": [
+          15.577365227935237
+        ]
+      },
+      "Leading_Current_Reactive_Power_kVarh": {
+        "mean": [
+          1.3046125856164383
+        ],
+        "scale": [
+          2.197292943047013
+        ]
+      },
+      "CO2(tCO2)": {
+        "mean": [
+          0.011391837899543381
+        ],
+        "scale": [
+          0.015784670531597267
+        ]
+      },
+      "Lagging_Current_Power_Factor": {
+        "mean": [
+          80.57833493864156
+        ],
+        "scale": [
+          18.919937208280373
+        ]
+      },
+      "Leading_Current_Power_Factor": {
+        "mean": [
+          99.8114109589041
+        ],
+        "scale": [
+          0.3193362409213009
+        ]
+      }
+    }
+  },
+  "feature_info": {
+    "numeric_features": [
+      "Usage_kWh",
+      "Lagging_Current_Reactive.Power_kVarh",
+      "Leading_Current_Reactive_Power_kVarh",
+      "CO2(tCO2)",
+      "Lagging_Current_Power_Factor",
+      "Leading_Current_Power_Factor",
+      "NSM",
+      "hour",
+      "minute",
+      "day_of_week",
+      "day_of_month",
+      "month",
+      "is_weekend",
+      "is_business_hour",
+      "hour_sin",
+      "hour_cos",
+      "month_sin",
+      "month_cos",
+      "day_of_week_sin",
+      "day_of_week_cos"
+    ],
+    "categorical_features": [],
+    "generated_features": [
+      "day_of_week",
+      "day_of_month",
+      "is_weekend",
+      "is_business_hour",
+      "hour_sin",
+      "hour_cos",
+      "month_sin",
+      "month_cos",
+      "day_of_week_sin",
+      "day_of_week_cos"
+    ]
+  }
+}

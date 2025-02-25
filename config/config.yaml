@@ -1,0 +1,195 @@
+# Steel Power Prediction Project Configuration
+# Current Date and Time (UTC): 2025-02-25 08:54:41
+# Current User: XC
+
+project:
+  name: steel_power_prediction
+  version: 0.1.0
+  description: 基于深度强化学习的钢铁厂电力需求预测系统
+  created_at: '2025-02-25 05:31:30'
+  updated_at: '2025-02-25 08:54:41'
+  created_by: zlbbbb
+  updated_by: XC
+data:
+  paths:
+    raw: data/raw/steel_industry_data.csv
+    processed: data/processed
+    interim: data/processed/interim
+    features: data/processed/features
+    final: data/processed/final
+  train_ratio: 0.7
+  val_ratio: 0.15
+  test_ratio: 0.15
+  sequence_length: 24
+  prediction_horizon: 12
+  columns:
+    date:
+      type: datetime
+      format: '%d/%m/%Y %H:%M'
+      is_index: true
+      timezone: UTC
+    numerical_features:
+    - name: Usage_kWh
+      type: float
+      normalization: standard
+      handle_missing: interpolate
+      outlier_detection: true
+      outlier_method: IQR
+      outlier_threshold: 1.5
+    - name: Lagging_Current_Reactive.Power_kVarh
+      type: float
+      normalization: standard
+      handle_missing: interpolate
+      outlier_detection: true
+      outlier_method: IQR
+      outlier_threshold: 1.5
+    - name: Leading_Current_Reactive_Power_kVarh
+      type: float
+      normalization: standard
+      handle_missing: interpolate
+      outlier_detection: true
+      outlier_method: IQR
+      outlier_threshold: 1.5
+    - name: CO2(tCO2)
+      type: float
+      normalization: standard
+      handle_missing: interpolate
+      outlier_detection: true
+      outlier_method: IQR
+      outlier_threshold: 1.5
+    - name: Lagging_Current_Power_Factor
+      type: float
+      normalization: minmax
+      handle_missing: interpolate
+      outlier_detection: true
+      outlier_method: IQR
+      outlier_threshold: 1.5
+    - name: Leading_Current_Power_Factor
+      type: float
+      normalization: minmax
+      handle_missing: interpolate
+      outlier_detection: true
+      outlier_method: IQR
+      outlier_threshold: 1.5
+    integer_features:
+    - name: NSM
+      type: int
+      description: Numeric Sequential Minute (分钟序号)
+      range:
+      - 0
+      - 1440
+      handle_missing: interpolate
+    categorical_features:
+    - name: WeekStatus
+      type: category
+      categories:
+      - Weekday
+      - Weekend
+      encoding: onehot
+      handle_missing: mode
+    - name: Day_of_week
+      type: category
+      categories:
+      - Monday
+      - Tuesday
+      - Wednesday
+      - Thursday
+      - Friday
+      - Saturday
+      - Sunday
+      encoding: onehot
+      handle_missing: mode
+    - name: Load_Type
+      type: category
+      categories:
+      - Light_Load
+      - Medium_Load
+      - Maximum_Load
+      encoding: onehot
+      handle_missing: mode
+  preprocessing:
+    handle_missing: interpolate
+    outlier_detection: true
+    outlier_method: IQR
+    normalization: standard
+    steps:
+    - name: handle_missing_values
+      enabled: true
+      order: 1
+    - name: handle_outliers
+      enabled: true
+      order: 2
+    - name: normalize_features
+      enabled: true
+      order: 3
+    - name: encode_categories
+      enabled: true
+      order: 4
+    validation:
+      check_missing: true
+      check_duplicates: true
+      check_data_types: true
+      check_value_ranges: true
+      check_categorical_values: true
+  feature_engineering:
+    create_time_features: true
+    time_features:
+    - hour
+    - day_of_week
+    - month
+    - is_weekend
+    rolling_features:
+      window_sizes:
+      - 6
+      - 12
+      - 24
+      operations:
+      - mean
+      - std
+      - min
+      - max
+    lag_features:
+      lag_hours:
+      - 1
+      - 2
+      - 3
+      - 6
+      - 12
+      - 24
+model:
+  type: DQN
+  hidden_size:
+  - 256
+  - 128
+  - 64
+  learning_rate: 0.0005
+  gamma: 0.99
+  memory_size: 10000
+  batch_size: 64
+  epsilon_start: 1.0
+  epsilon_end: 0.01
+  epsilon_decay: 0.995
+  use_dueling: true
+  use_double: true
+  use_priority: false
+training:
+  epochs: 1000
+  max_steps: 500
+  eval_frequency: 10
+  save_frequency: 50
+  checkpoint_dir: checkpoints
+  log_dir: logs
+  early_stopping_patience: 20
+  load_checkpoint: false
+  tensorboard: true
+  log_level: INFO
+environment:
+  state_size: 24
+  action_size: 100
+  reward_scale: 1.0
+  reward_shaping: true
+  done_penalty: -100
+  success_reward: 100
+  step_penalty: -1
+  max_power: 10000
+  min_power: 0
