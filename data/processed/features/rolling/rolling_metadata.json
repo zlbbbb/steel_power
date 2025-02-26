@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-02-26 08:56:24",
+  "timestamp": "2025-02-26 13:51:28",
   "feature_type": "rolling",
   "description": "滚动特征，窗口：[24, 48]",
   "columns": [

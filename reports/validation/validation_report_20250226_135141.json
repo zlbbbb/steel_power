@@ -1,0 +1,216 @@
+{
+  "validation_info": {
+    "timestamp": "2025-02-26 13:51:41",
+    "validated_by": "zlbbbb",
+    "is_valid": true,
+    "data_shape": {
+      "rows": 35040,
+      "columns": 11
+    }
+  },
+  "errors": [],
+  "warnings": [
+    "列 Usage_kWh 使用Z分数方法检测到 212 个异常值",
+    "列 Usage_kWh 使用IQR方法检测到 328 个异常值",
+    "列 Lagging_Current_Reactive.Power_kVarh 使用Z分数方法检测到 387 个异常值",
+    "列 Lagging_Current_Reactive.Power_kVarh 使用IQR方法检测到 1059 个异常值",
+    "列 Leading_Current_Reactive_Power_kVarh 使用Z分数方法检测到 467 个异常值",
+    "列 Leading_Current_Reactive_Power_kVarh 使用IQR方法检测到 7759 个异常值",
+    "列 CO2(tCO2) 使用Z分数方法检测到 437 个异常值",
+    "列 CO2(tCO2) 使用IQR方法检测到 437 个异常值",
+    "列 Lagging_Current_Power_Factor 使用Z分数方法检测到 1 个异常值",
+    "列 Lagging_Current_Power_Factor 使用IQR方法检测到 1 个异常值",
+    "列 Leading_Current_Power_Factor 使用IQR方法检测到 8327 个异常值",
+    "特征 Usage_kWh 和 CO2(tCO2) 存在高度相关性 (0.99)",
+    "特征 Leading_Current_Reactive_Power_kVarh 和 Leading_Current_Power_Factor 存在高度相关性 (-0.94)"
+  ],
+  "statistics": {
+    "value_ranges": {
+      "Usage_kWh": {
+        "min": 0.0,
+        "max": 157.18,
+        "mean": 27.386892408675795,
+        "std": 33.44437970801463,
+        "null_count": 0,
+        "out_of_range": 0
+      },
+      "Lagging_Current_Reactive.Power_kVarh": {
+        "min": 0.0,
+        "max": 96.91,
+        "mean": 13.035383561643837,
+        "std": 16.305999973081395,
+        "null_count": 0,
+        "out_of_range": 0
+      },
+      "Leading_Current_Reactive_Power_kVarh": {
+        "min": 0.0,
+        "max": 27.76,
+        "mean": 3.8709486301369864,
+        "std": 7.424462753105592,
+        "null_count": 0,
+        "out_of_range": 0
+      },
+      "CO2(tCO2)": {
+        "min": 0.0,
+        "max": 0.07,
+        "mean": 0.01152425799086758,
+        "std": 0.01615082153443048,
+        "null_count": 0,
+        "out_of_range": 0
+      },
+      "Lagging_Current_Power_Factor": {
+        "min": 0.0,
+        "max": 100.0,
+        "mean": 80.5780562214612,
+        "std": 18.92132226781833,
+        "null_count": 0,
+        "out_of_range": 0
+      },
+      "Leading_Current_Power_Factor": {
+        "min": 0.0,
+        "max": 100.0,
+        "mean": 84.36786986301371,
+        "std": 30.456535157583907,
+        "null_count": 0,
+        "out_of_range": 0
+      }
+    },
+    "categorical_values": {
+      "Load_Type": {
+        "value_counts": {
+          "Light_Load": 18072,
+          "Medium_Load": 9696,
+          "Maximum_Load": 7272
+        },
+        "null_count": 0,
+        "invalid_values": []
+      },
+      "WeekStatus": {
+        "value_counts": {
+          "Weekday": 25056,
+          "Weekend": 9984
+        },
+        "null_count": 0,
+        "invalid_values": []
+      }
+    },
+    "temporal": {
+      "temporal": {
+        "start_date": "01/01/2018 00:00",
+        "end_date": "31/12/2018 23:45",
+        "total_periods": 35040,
+        "time_span_days": 364,
+        "unique_dates": 35040,
+        "duplicated_dates": 0
+      }
+    },
+    "outliers": {
+      "Usage_kWh": {
+        "z_score_outliers": 212,
+        "iqr_outliers": 328,
+        "Q1": 3.2,
+        "Q3": 51.2375,
+        "IQR": 48.037499999999994
+      },
+      "Lagging_Current_Reactive.Power_kVarh": {
+        "z_score_outliers": 387,
+        "iqr_outliers": 1059,
+        "Q1": 2.3,
+        "Q3": 22.64,
+        "IQR": 20.34
+      },
+      "Leading_Current_Reactive_Power_kVarh": {
+        "z_score_outliers": 467,
+        "iqr_outliers": 7759,
+        "Q1": 0.0,
+        "Q3": 2.09,
+        "IQR": 2.09
+      },
+      "CO2(tCO2)": {
+        "z_score_outliers": 437,
+        "iqr_outliers": 437,
+        "Q1": 0.0,
+        "Q3": 0.02,
+        "IQR": 0.02
+      },
+      "Lagging_Current_Power_Factor": {
+        "z_score_outliers": 1,
+        "iqr_outliers": 1,
+        "Q1": 63.32,
+        "Q3": 99.0225,
+        "IQR": 35.70249999999999
+      },
+      "Leading_Current_Power_Factor": {
+        "z_score_outliers": 0,
+        "iqr_outliers": 8327,
+        "Q1": 99.7,
+        "Q3": 100.0,
+        "IQR": 0.29999999999999716
+      }
+    },
+    "correlations": {
+      "correlation_matrix": {
+        "Usage_kWh": {
+          "Usage_kWh": 1.0,
+          "Lagging_Current_Reactive.Power_kVarh": 0.8961499010002166,
+          "Leading_Current_Reactive_Power_kVarh": -0.32492178394544313,
+          "CO2(tCO2)": 0.9881797716789515,
+          "Lagging_Current_Power_Factor": 0.3859604614141433,
+          "Leading_Current_Power_Factor": 0.3535657085478799
+        },
+        "Lagging_Current_Reactive.Power_kVarh": {
+          "Usage_kWh": 0.8961499010002166,
+          "Lagging_Current_Reactive.Power_kVarh": 1.0,
+          "Leading_Current_Reactive_Power_kVarh": -0.40514167762598446,
+          "CO2(tCO2)": 0.8869477080514382,
+          "Lagging_Current_Power_Factor": 0.14453375532413168,
+          "Leading_Current_Power_Factor": 0.4077162820034886
+        },
+        "Leading_Current_Reactive_Power_kVarh": {
+          "Usage_kWh": -0.32492178394544313,
+          "Lagging_Current_Reactive.Power_kVarh": -0.40514167762598446,
+          "Leading_Current_Reactive_Power_kVarh": 1.0,
+          "CO2(tCO2)": -0.3327766451771398,
+          "Lagging_Current_Power_Factor": 0.5267704711405935,
+          "Leading_Current_Power_Factor": -0.9440389991536534
+        },
+        "CO2(tCO2)": {
+          "Usage_kWh": 0.9881797716789515,
+          "Lagging_Current_Reactive.Power_kVarh": 0.8869477080514382,
+          "Leading_Current_Reactive_Power_kVarh": -0.3327766451771398,
+          "CO2(tCO2)": 1.0,
+          "Lagging_Current_Power_Factor": 0.37960471977049093,
+          "Leading_Current_Power_Factor": 0.36001910096017814
+        },
+        "Lagging_Current_Power_Factor": {
+          "Usage_kWh": 0.3859604614141433,
+          "Lagging_Current_Reactive.Power_kVarh": 0.14453375532413168,
+          "Leading_Current_Reactive_Power_kVarh": 0.5267704711405935,
+          "CO2(tCO2)": 0.37960471977049093,
+          "Lagging_Current_Power_Factor": 1.0,
+          "Leading_Current_Power_Factor": -0.5199668536819609
+        },
+        "Leading_Current_Power_Factor": {
+          "Usage_kWh": 0.3535657085478799,
+          "Lagging_Current_Reactive.Power_kVarh": 0.4077162820034886,
+          "Leading_Current_Reactive_Power_kVarh": -0.9440389991536534,
+          "CO2(tCO2)": 0.36001910096017814,
+          "Lagging_Current_Power_Factor": -0.5199668536819609,
+          "Leading_Current_Power_Factor": 1.0
+        }
+      },
+      "high_correlations": [
+        {
+          "feature1": "Usage_kWh",
+          "feature2": "CO2(tCO2)",
+          "correlation": 0.9881797716789515
+        },
+        {
+          "feature1": "Leading_Current_Reactive_Power_kVarh",
+          "feature2": "Leading_Current_Power_Factor",
+          "correlation": -0.9440389991536534
+        }
+      ]
+    }
+  }
+}

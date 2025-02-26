@@ -1,217 +1,220 @@
 # Steel Power Prediction Project Configuration
-# Current Date and Time (UTC): 2025-02-26 08:52:15
+# Current Date and Time (UTC): 2025-02-26 13:52:29
 # Current User: zlbbbb
+# Repository: zlbbbb/steel_power
 
+#######################
 # 项目基本信息配置
+#######################
 project:
-  name: steel_power_prediction
-  version: 0.1.0
-  description: 基于深度强化学习的钢铁厂电力需求预测系统
-  created_at: '2025-02-25 05:31:30'
-  updated_at: '2025-02-26 08:52:15'
-  created_by: zlbbbb
-  updated_by: zlbbbb
+  name: steel_power_prediction           # 项目名称
+  version: 0.1.0                        # 项目版本号
+  description: 基于深度强化学习的钢铁厂电力需求预测系统  # 项目描述
+  created_at: '2025-02-25 05:31:30'    # 项目创建时间
+  updated_at: '2025-02-26 13:52:29'    # 项目最后更新时间
+  created_by: zlbbbb                    # 项目创建者
+  updated_by: zlbbbb                    # 项目最后更新者
 
+#######################
 # 数据处理相关配置
+#######################
 data:
-  # 数据文件路径配置
+  # 数据文件路径配置 - 定义了数据在项目中的存储位置
   paths:
-    raw: data/raw/steel_industry_data.csv          # 原始数据文件路径
-    processed: data/processed                       # 处理后数据存储目录
-    interim: data/processed/interim                 # 中间处理结果存储目录
-    features: data/processed/features              # 特征工程结果存储目录
-    final: data/processed/final                    # 最终处理结果存储目录
+    raw: data/raw/steel_industry_data.csv    # 原始数据文件路径
+    processed: data/processed                 # 处理后的数据根目录
+    interim: data/processed/interim           # 中间数据处理结果目录
+    features: data/processed/features         # 特征工程结果目录
+    final: data/processed/final              # 最终处理后的数据目录
   
-  # 数据集划分比例
-  train_ratio: 0.7                                # 训练集比例
-  val_ratio: 0.15                                # 验证集比例
-  test_ratio: 0.15                               # 测试集比例
-  sequence_length: 24                            # 时序序列长度（小时）
-  prediction_horizon: 12                         # 预测时间范围（小时）
+  # 数据集划分配置 - 定义了训练、验证和测试集的比例
+  split:
+    train_ratio: 0.7                         # 训练集占比70%
+    val_ratio: 0.15                          # 验证集占比15%
+    test_ratio: 0.15                         # 测试集占比15%
+  
+  # 时序数据配置
+  sequence_length: 24                        # 输入序列长度（使用前24小时数据）
+  prediction_horizon: 12                     # 预测时间范围（预测未来12小时）
 
-  # 数据列配置
-  columns:
-    # 时间列配置
-    date:
-      type: datetime
-      format: '%d/%m/%Y %H:%M'                   # 日期时间格式
-      is_index: true                             # 是否作为索引
-      timezone: UTC                              # 时区设置
+  # 特征配置 - 定义了模型使用的输入特征
+  features:
+    # 数值型特征配置 - 连续值特征
+    numerical:
+      - name: Usage_kWh                      # 用电量特征
+        type: float                          # 数据类型：浮点数
+        normalization: standard              # 标准化方法：标准化
+        handle_missing: interpolate          # 缺失值处理：插值
+        outlier_detection: true              # 是否进行异常值检测
+        outlier_method: IQR                  # 异常值检测方法：四分位距法
+        outlier_threshold: 1.5               # 异常值判定阈值
 
-    # 数值型特征配置
-    numerical_features:
-      - name: Usage_kWh                          # 用电量（千瓦时）
-        type: float
-        normalization: standard                  # 标准化方法
-        handle_missing: interpolate              # 缺失值处理方法
-        outlier_detection: true                  # 是否检测异常值
-        outlier_method: IQR                      # 异常值检测方法
-        outlier_threshold: 1.5                   # 异常值阈值
-
-      - name: Lagging_Current_Reactive.Power_kVarh  # 滞后电流无功功率
+      - name: Lagging_Current_Reactive.Power_kVarh  # 滞后无功功率
         type: float
         normalization: standard
-        handle_missing: interpolate
-        outlier_detection: true
-        outlier_method: IQR
-        outlier_threshold: 1.5
 
-      - name: Leading_Current_Reactive_Power_kVarh  # 超前电流无功功率
+      - name: Leading_Current_Reactive_Power_kVarh  # 超前无功功率
         type: float
         normalization: standard
-        handle_missing: interpolate
-        outlier_detection: true
-        outlier_method: IQR
-        outlier_threshold: 1.5
 
-      - name: CO2(tCO2)                         # 二氧化碳排放量
+      - name: CO2(tCO2)                     # 二氧化碳排放量
         type: float
         normalization: standard
-        handle_missing: interpolate
-        outlier_detection: true
-        outlier_method: IQR
-        outlier_threshold: 1.5
 
-      - name: Lagging_Current_Power_Factor      # 滞后电流功率因数
+      - name: Lagging_Current_Power_Factor   # 滞后功率因数
+        type: float
+        normalization: minmax                # 归一化方法：最大最小值归一化
+
+      - name: Leading_Current_Power_Factor   # 超前功率因数
         type: float
         normalization: minmax
-        handle_missing: interpolate
-        outlier_detection: true
-        outlier_method: IQR
-        outlier_threshold: 1.5
 
-      - name: Leading_Current_Power_Factor      # 超前电流功率因数
-        type: float
-        normalization: minmax
-        handle_missing: interpolate
-        outlier_detection: true
-        outlier_method: IQR
-        outlier_threshold: 1.5
+    # 类别型特征配置 - 离散值特征
+    categorical:
+      - name: WeekStatus                     # 工作日状态
+        type: category                       # 数据类型：类别
+        encoding: onehot                     # 编码方法：独热编码
 
-    # 整数型特征配置
-    integer_features:
-      - name: NSM                               # 分钟序号
-        type: int
-        description: Numeric Sequential Minute
-        range: [0, 100000]                        # 取值范围 最大86000左右数据集
-        handle_missing: interpolate
-
-    # 类别型特征配置
-    categorical_features:
-      - name: WeekStatus                        # 周内/周末状态
+      - name: Day_of_week                    # 星期几
         type: category
-        categories: [Weekday, Weekend]
-        encoding: onehot                        # 编码方式
-        handle_missing: mode                    # 缺失值处理方法
-
-      - name: Day_of_week                       # 星期几
-        type: category
-        categories: [Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday]
         encoding: onehot
-        handle_missing: mode
 
-      - name: Load_Type                         # 负载类型
+      - name: Load_Type                      # 负载类型
         type: category
-        categories: [Light_Load, Medium_Load, Maximum_Load]
         encoding: onehot
-        handle_missing: mode
 
-  # 数据预处理配置
+  # 数据预处理配置 - 定义了数据清洗和预处理步骤
   preprocessing:
-    handle_missing: interpolate                 # 默认缺失值处理方法
-    outlier_detection: true                     # 是否检测异常值
-    outlier_method: IQR                         # 默认异常值检测方法
-    normalization: standard                     # 默认标准化方法
-    
-    # 预处理步骤
-    steps:
-      - name: handle_missing_values             # 处理缺失值
-        enabled: true
-        order: 1
-      
-      - name: handle_outliers                   # 处理异常值
-        enabled: true
-        order: 2
-      
-      - name: normalize_features                # 特征标准化
-        enabled: true
-        order: 3
-      
-      - name: encode_categories                 # 类别编码
-        enabled: true
-        order: 4
+    handle_missing: interpolate              # 默认缺失值处理方法：插值
+    outlier_detection: true                  # 是否检测异常值
+    outlier_method: IQR                      # 默认异常值检测方法：四分位距法
+    normalization: standard                  # 默认标准化方法：标准化
+    validation:                              # 数据验证配置
+      check_missing: true                    # 检查缺失值
+      check_duplicates: true                 # 检查重复数据
+      check_data_types: true                 # 检查数据类型
+      check_value_ranges: true               # 检查数值范围
 
-    # 数据验证配置
-    validation:
-      check_missing: true                       # 检查缺失值
-      check_duplicates: true                    # 检查重复值
-      check_data_types: true                    # 检查数据类型
-      check_value_ranges: true                  # 检查取值范围
-      check_categorical_values: true            # 检查类别值
-
-  # 特征工程配置
+  # 特征工程配置 - 定义了特征衍生和转换
   feature_engineering:
-    create_time_features: true                  # 是否创建时间特征
-    
-    # 时间特征配置
-    time_features: [hour, day_of_week, month, is_weekend]
-    
-    # 滑动窗口特征配置
-    rolling_features:
-      window_sizes: [6, 12, 24]                # 窗口大小（小时）
-      operations: [mean, std, min, max]         # 统计操作
-    
-    # 滞后特征配置
-    lag_features:
-      lag_hours: [1, 2, 3, 6, 12, 24]          # 滞后时间（小时）
+    time_features: [hour, day_of_week, month, is_weekend]  # 时间特征
+    rolling_features:                        # 滑动窗口特征
+      window_sizes: [6, 12, 24]             # 窗口大小（小时）
+      operations: [mean, std, min, max]      # 统计操作
+    lag_features:                           # 滞后特征
+      lag_hours: [1, 2, 3, 6, 12, 24]       # 滞后时间（小时）
 
+#######################
 # 模型配置
+#######################
 model:
-  type: DQN                                     # 模型类型
-  hidden_size: [256, 128, 64]                  # 隐藏层大小
-  learning_rate: 0.0005                        # 学习率
-  gamma: 0.99                                  # 折扣因子
-  memory_size: 10000                          # 经验回放缓冲区大小
-  batch_size: 64                              # 训练批次大小
-  epsilon_start: 1.0                          # 初始探索率
-  epsilon_end: 0.01                           # 最终探索率
-  epsilon_decay: 0.995                        # 探索率衰减系数
-  use_dueling: true                           # 是否使用Dueling DQN
-  use_double: true                            # 是否使用Double DQN
-  use_priority: false                         # 是否使用优先经验回放
+  type: DQN                                 # 模型类型：深度Q网络
+  network:                                  # 神经网络结构配置
+    hidden_size: [256, 128, 64]            # 隐藏层神经元数量
+    dropout: 0.1                           # Dropout比率
+    activation: relu                       # 激活函数
+  
+  # DQN算法特定配置
+  dqn:
+    learning_rate: 0.0005                  # 学习率
+    gamma: 0.99                           # 折扣因子
+    memory_size: 10000                    # 经验回放缓冲区大小
+    batch_size: 64                        # 批次大小
+    epsilon_start: 1.0                    # 初始探索率
+    epsilon_end: 0.01                     # 最终探索率
+    epsilon_decay: 0.995                  # 探索率衰减系数
+    target_update: 10                     # 目标网络更新频率
+    use_dueling: true                     # 是否使用Dueling DQN
+    use_double: true                      # 是否使用Double DQN
+    use_priority: false                   # 是否使用优先经验回放
 
+#######################
 # 训练配置
+#######################
 training:
-  epochs: 1000                                # 训练轮数
-  max_steps: 500                             # 每轮最大步数
-  eval_frequency: 10                         # 评估频率（轮数）
-  save_frequency: 50                         # 保存频率（轮数）
-  checkpoint_dir: checkpoints                # 检查点保存目录
-  log_dir: logs                             # 日志保存目录
-  early_stopping_patience: 20                # 早停耐心值
-  load_checkpoint: false                     # 是否加载已有检查点
-  tensorboard: true                         # 是否使用tensorboard
-  log_level: INFO                           # 日志级别
+  epochs: 1000                            # 训练总轮数
+  max_steps: 500                          # 每轮最大步数
+  eval_frequency: 10                      # 评估频率（轮数）
+  save_frequency: 50                      # 模型保存频率
+  
+  # 早停配置
+  early_stopping:
+    enabled: true                         # 是否启用早停
+    patience: 20                          # 早停耐心值
+    min_delta: 0.0001                    # 最小改善阈值
+  
+  # 检查点配置
+  checkpoint:
+    enabled: true                         # 是否启用检查点
+    dir: checkpoints                      # 检查点保存目录
+    load: false                          # 是否加载已有检查点
+    save_best: true                      # 是否保存最佳模型
+    save_last: true                      # 是否保存最后一个模型
+  
+  # 日志配置
+  logging:
+    level: INFO                          # 日志级别
+    dir: logs                            # 日志保存目录
+    tensorboard: true                    # 是否使用tensorboard
 
-# 强化学习环境配置
+#######################
+# 环境配置
+#######################
 environment:
-  state_size: 24                            # 状态空间维度（特征数量）
-  action_size: 100                          # 动作空间维度（离散化程度）
-  max_power: 10000                         # 最大功率值（kW）
-  min_power: 0                             # 最小功率值（kW）
-  reward_scale: 1.0                        # 奖励缩放因子
-  reward_shaping: true                     # 是否使用奖励整形
-  done_penalty: -100                       # 失败惩罚值
-  success_reward: 100                      # 成功奖励值
-  step_penalty: -1                         # 每步惩罚值
+  state_size: 24                         # 状态空间维度
+  action_size: 100                       # 动作空间维度
+  power:
+    max: 10000                          # 最大功率值（kW）
+    min: 0                              # 最小功率值（kW）
+  rewards:                              # 奖励设置
+    scale: 1.0                         # 奖励缩放因子
+    shaping: true                      # 是否使用奖励整形
+    done_penalty: -100                 # 失败惩罚值
+    success_reward: 100                # 成功奖励值
+    step_penalty: -1                   # 每步惩罚值
 
-# 评估配置（新增）
+#######################
+# 评估配置
+#######################
 evaluation:
-  num_episodes: 100                         # 评估轮数
-  save_predictions: true                    # 是否保存预测结果
-  plot_results: true                       # 是否绘制结果图表
-  metrics: [mse, rmse, mae, mape]          # 评估指标
+  # 基础评估设置
+  num_episodes: 100                      # 评估轮数
+  batch_size: 32                        # 评估批次大小
+  model_path: checkpoints/best_model.pth # 评估模型路径
+  output_dir: reports/evaluation         # 评估结果输出目录
+  save_predictions: true                # 是否保存预测结果
+  
+  # 评估指标配置
+  metrics:
+    - name: mse                         # 均方误差
+      enabled: true
+    - name: rmse                        # 均方根误差
+      enabled: true
+    - name: mae                         # 平均绝对误差
+      enabled: true
+    - name: mape                        # 平均绝对百分比误差
+      enabled: true
+    - name: r2                          # 决定系数
+      enabled: true
+  
+  # 可视化配置
   visualization:
-    plot_predictions: true                 # 是否绘制预测结果
-    plot_error_dist: true                 # 是否绘制误差分布
-    plot_training_curves: true            # 是否绘制训练曲线
+    enabled: true                       # 是否启用可视化
+    save_plots: true                    # 是否保存图表
+    show_plots: false                   # 是否显示图表
+    plots:
+      predictions:                      # 预测结果图
+        enabled: true
+        style: line
+        filename: prediction_results.png
+      error_dist:                       # 误差分布图
+        enabled: true
+        style: hist
+        filename: error_distribution.png
+      training_curves:                  # 训练曲线图
+        enabled: true
+        metrics: [loss, reward, epsilon]
+        filename: training_curves.png
+      feature_importance:               # 特征重要性图
+        enabled: true
+        filename: feature_importance.png
