@@ -285,7 +285,7 @@ if __name__ == "__main__":
     )
     
     # 加载配置
-    config_path = Path(__file__).parent.parent.parent / "configs" / "config.yaml"
+    config_path = Path(__file__).parent.parent.parent / "config" / "config.yaml"
     
     try:
         import yaml
