@@ -1,6 +1,6 @@
 """
 Logging Utility Functions
-Current Date and Time (UTC): 2025-02-26 13:32:20
+Current Date and Time (UTC): 2025-02-26 14:30:33
 Current User: zlbbbb
 """
 
@@ -11,7 +11,10 @@ from typing import Optional, Union, Dict, Any
 from datetime import datetime
 import yaml
 import json
-from .time_utils import get_current_time
+
+def get_current_time() -> datetime:
+    """获取当前 UTC 时间"""
+    return datetime.utcnow()
 
 class CustomFormatter(logging.Formatter):
     """自定义日志格式化器，支持彩色输出"""
@@ -176,3 +179,16 @@ class ExperimentLogger:
     def get_exp_dir(self) -> Path:
         """获取实验目录"""
         return self.exp_path
+
+if __name__ == "__main__":
+    # 测试代码
+    logger = setup_logger("test_logger")
+    logger.info("测试消息")
+    
+    # 测试 ExperimentLogger
+    exp_logger = ExperimentLogger(
+        exp_dir="logs",
+        exp_name="test_experiment",
+        config={"test_param": 1}
+    )
+    exp_logger.log_metrics({"loss": 0.1, "accuracy": 0.95}, step=1)

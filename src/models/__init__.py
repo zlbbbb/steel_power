@@ -8,12 +8,11 @@ from .networks import DuelingDQN, DQN
 from .agent import DQNAgent
 from .environment import SteelPowerEnv
 
-from .evaluator import ModelEvaluator
+
 
 __all__ = [
     'DuelingDQN',
     'DQN',
     'DQNAgent',
     'SteelPowerEnv',
-    'ModelEvaluator'
 ]
