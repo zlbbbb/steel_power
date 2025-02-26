@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-02-26 07:40:18",
+  "timestamp": "2025-02-26 08:56:24",
   "feature_type": "lag",
   "description": "滞后特征，周期：[1, 2, 3]",
   "columns": [

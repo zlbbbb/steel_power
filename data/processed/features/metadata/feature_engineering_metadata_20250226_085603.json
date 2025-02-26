@@ -1,0 +1,112 @@
+{
+  "timestamp": "2025-02-26 08:56:03",
+  "created_by": "zlbbbb",
+  "process_time": 0.1237,
+  "config": {
+    "feature_engineering": {
+      "time_features": {
+        "enabled": true,
+        "cyclical_encoding": true
+      },
+      "lag_features": {
+        "enabled": true,
+        "periods": [
+          1,
+          2,
+          3
+        ]
+      },
+      "rolling_features": {
+        "enabled": true,
+        "windows": [
+          24,
+          48
+        ],
+        "functions": [
+          "mean",
+          "std"
+        ]
+      },
+      "scaling": {
+        "method": "standard",
+        "target_cols": [
+          "power",
+          "temperature"
+        ]
+      },
+      "output": {
+        "save_features": true,
+        "save_metadata": true
+      }
+    }
+  },
+  "feature_info": {
+    "time_features": [
+      "hour",
+      "day",
+      "month",
+      "year",
+      "dayofweek",
+      "quarter",
+      "hour_sin",
+      "hour_cos",
+      "month_sin",
+      "month_cos",
+      "dayofweek_sin",
+      "dayofweek_cos",
+      "is_weekend",
+      "is_month_start",
+      "is_month_end"
+    ],
+    "lag_features": [
+      "power_lag_1",
+      "power_lag_2",
+      "power_lag_3",
+      "temperature_lag_1",
+      "temperature_lag_2",
+      "temperature_lag_3"
+    ],
+    "rolling_features": [
+      "power_mean_24",
+      "power_std_24",
+      "power_mean_48",
+      "power_std_48",
+      "temperature_mean_24",
+      "temperature_std_24",
+      "temperature_mean_48",
+      "temperature_std_48"
+    ],
+    "scaled_features": [
+      "power",
+      "temperature"
+    ]
+  },
+  "scaling_info": {
+    "power": {
+      "type": "StandardScaler",
+      "parameters": {
+        "copy": true,
+        "with_mean": true,
+        "with_std": true
+      },
+      "mean": 100.24227646186013,
+      "scale": 9.917900530182434
+    },
+    "temperature": {
+      "type": "StandardScaler",
+      "parameters": {
+        "copy": true,
+        "with_mean": true,
+        "with_std": true
+      },
+      "mean": 25.022001597906947,
+      "scale": 4.938761538174034
+    }
+  },
+  "feature_counts": {
+    "time_features": 15,
+    "lag_features": 6,
+    "rolling_features": 8,
+    "scaled_features": 2
+  }
+}

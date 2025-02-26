@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-02-26 07:40:18",
+  "timestamp": "2025-02-26 08:56:24",
   "feature_type": "time",
   "description": "时间特征，包含基础和周期性特征",
   "columns": [

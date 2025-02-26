@@ -143,6 +143,102 @@
         ],
         "memory_usage_mb": 0.0001983642578125
       }
+    },
+    {
+      "hash": "ca4a0312ccf391b9d1572eaa58b0f2ff",
+      "stage": "interim",
+      "file_path": "o:\\VS\\steel_power_prediction\\data\\processed\\interim\\interim_data.csv",
+      "timestamp": "2025-02-26 08:55:52",
+      "user": "zlbbbb",
+      "description": "测试interim阶段数据",
+      "data_info": {
+        "rows": 5,
+        "columns": [
+          "A",
+          "B"
+        ],
+        "memory_usage_mb": 0.0001983642578125
+      }
+    },
+    {
+      "hash": "ca4a0312ccf391b9d1572eaa58b0f2ff",
+      "stage": "features",
+      "file_path": "o:\\VS\\steel_power_prediction\\data\\processed\\features\\features_data.csv",
+      "timestamp": "2025-02-26 08:55:52",
+      "user": "zlbbbb",
+      "description": "测试features阶段数据",
+      "data_info": {
+        "rows": 5,
+        "columns": [
+          "A",
+          "B"
+        ],
+        "memory_usage_mb": 0.0001983642578125
+      }
+    },
+    {
+      "hash": "ca4a0312ccf391b9d1572eaa58b0f2ff",
+      "stage": "final",
+      "file_path": "o:\\VS\\steel_power_prediction\\data\\processed\\final\\final_data.csv",
+      "timestamp": "2025-02-26 08:55:52",
+      "user": "zlbbbb",
+      "description": "测试final阶段数据",
+      "data_info": {
+        "rows": 5,
+        "columns": [
+          "A",
+          "B"
+        ],
+        "memory_usage_mb": 0.0001983642578125
+      }
+    },
+    {
+      "hash": "ca4a0312ccf391b9d1572eaa58b0f2ff",
+      "stage": "interim",
+      "file_path": "o:\\VS\\steel_power_prediction\\data\\processed\\interim\\interim_data.csv",
+      "timestamp": "2025-02-26 08:56:13",
+      "user": "zlbbbb",
+      "description": "测试interim阶段数据",
+      "data_info": {
+        "rows": 5,
+        "columns": [
+          "A",
+          "B"
+        ],
+        "memory_usage_mb": 0.0001983642578125
+      }
+    },
+    {
+      "hash": "ca4a0312ccf391b9d1572eaa58b0f2ff",
+      "stage": "features",
+      "file_path": "o:\\VS\\steel_power_prediction\\data\\processed\\features\\features_data.csv",
+      "timestamp": "2025-02-26 08:56:13",
+      "user": "zlbbbb",
+      "description": "测试features阶段数据",
+      "data_info": {
+        "rows": 5,
+        "columns": [
+          "A",
+          "B"
+        ],
+        "memory_usage_mb": 0.0001983642578125
+      }
+    },
+    {
+      "hash": "ca4a0312ccf391b9d1572eaa58b0f2ff",
+      "stage": "final",
+      "file_path": "o:\\VS\\steel_power_prediction\\data\\processed\\final\\final_data.csv",
+      "timestamp": "2025-02-26 08:56:13",
+      "user": "zlbbbb",
+      "description": "测试final阶段数据",
+      "data_info": {
+        "rows": 5,
+        "columns": [
+          "A",
+          "B"
+        ],
+        "memory_usage_mb": 0.0001983642578125
+      }
     }
   ]
 }

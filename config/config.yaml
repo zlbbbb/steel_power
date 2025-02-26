@@ -1,195 +1,217 @@
 # Steel Power Prediction Project Configuration
-# Current Date and Time (UTC): 2025-02-26 07:39:22
-# Current User: XC
+# Current Date and Time (UTC): 2025-02-26 08:52:15
+# Current User: zlbbbb
 
+# 项目基本信息配置
 project:
   name: steel_power_prediction
   version: 0.1.0
   description: 基于深度强化学习的钢铁厂电力需求预测系统
   created_at: '2025-02-25 05:31:30'
-  updated_at: '2025-02-26 07:39:22'
+  updated_at: '2025-02-26 08:52:15'
   created_by: zlbbbb
-  updated_by: XC
+  updated_by: zlbbbb
+
+# 数据处理相关配置
 data:
+  # 数据文件路径配置
   paths:
-    raw: data/raw/steel_industry_data.csv
-    processed: data/processed
-    interim: data/processed/interim
-    features: data/processed/features
-    final: data/processed/final
-  train_ratio: 0.7
-  val_ratio: 0.15
-  test_ratio: 0.15
-  sequence_length: 24
-  prediction_horizon: 12
+    raw: data/raw/steel_industry_data.csv          # 原始数据文件路径
+    processed: data/processed                       # 处理后数据存储目录
+    interim: data/processed/interim                 # 中间处理结果存储目录
+    features: data/processed/features              # 特征工程结果存储目录
+    final: data/processed/final                    # 最终处理结果存储目录
+  
+  # 数据集划分比例
+  train_ratio: 0.7                                # 训练集比例
+  val_ratio: 0.15                                # 验证集比例
+  test_ratio: 0.15                               # 测试集比例
+  sequence_length: 24                            # 时序序列长度（小时）
+  prediction_horizon: 12                         # 预测时间范围（小时）
+
+  # 数据列配置
   columns:
+    # 时间列配置
     date:
       type: datetime
-      format: '%d/%m/%Y %H:%M'
-      is_index: true
-      timezone: UTC
+      format: '%d/%m/%Y %H:%M'                   # 日期时间格式
+      is_index: true                             # 是否作为索引
+      timezone: UTC                              # 时区设置
+
+    # 数值型特征配置
     numerical_features:
-    - name: Usage_kWh
-      type: float
-      normalization: standard
-      handle_missing: interpolate
-      outlier_detection: true
-      outlier_method: IQR
-      outlier_threshold: 1.5
-    - name: Lagging_Current_Reactive.Power_kVarh
-      type: float
-      normalization: standard
-      handle_missing: interpolate
-      outlier_detection: true
-      outlier_method: IQR
-      outlier_threshold: 1.5
-    - name: Leading_Current_Reactive_Power_kVarh
-      type: float
-      normalization: standard
-      handle_missing: interpolate
-      outlier_detection: true
-      outlier_method: IQR
-      outlier_threshold: 1.5
-    - name: CO2(tCO2)
-      type: float
-      normalization: standard
-      handle_missing: interpolate
-      outlier_detection: true
-      outlier_method: IQR
-      outlier_threshold: 1.5
-    - name: Lagging_Current_Power_Factor
-      type: float
-      normalization: minmax
-      handle_missing: interpolate
-      outlier_detection: true
-      outlier_method: IQR
-      outlier_threshold: 1.5
-    - name: Leading_Current_Power_Factor
-      type: float
-      normalization: minmax
-      handle_missing: interpolate
-      outlier_detection: true
-      outlier_method: IQR
-      outlier_threshold: 1.5
+      - name: Usage_kWh                          # 用电量（千瓦时）
+        type: float
+        normalization: standard                  # 标准化方法
+        handle_missing: interpolate              # 缺失值处理方法
+        outlier_detection: true                  # 是否检测异常值
+        outlier_method: IQR                      # 异常值检测方法
+        outlier_threshold: 1.5                   # 异常值阈值
+
+      - name: Lagging_Current_Reactive.Power_kVarh  # 滞后电流无功功率
+        type: float
+        normalization: standard
+        handle_missing: interpolate
+        outlier_detection: true
+        outlier_method: IQR
+        outlier_threshold: 1.5
+
+      - name: Leading_Current_Reactive_Power_kVarh  # 超前电流无功功率
+        type: float
+        normalization: standard
+        handle_missing: interpolate
+        outlier_detection: true
+        outlier_method: IQR
+        outlier_threshold: 1.5
+
+      - name: CO2(tCO2)                         # 二氧化碳排放量
+        type: float
+        normalization: standard
+        handle_missing: interpolate
+        outlier_detection: true
+        outlier_method: IQR
+        outlier_threshold: 1.5
+
+      - name: Lagging_Current_Power_Factor      # 滞后电流功率因数
+        type: float
+        normalization: minmax
+        handle_missing: interpolate
+        outlier_detection: true
+        outlier_method: IQR
+        outlier_threshold: 1.5
+
+      - name: Leading_Current_Power_Factor      # 超前电流功率因数
+        type: float
+        normalization: minmax
+        handle_missing: interpolate
+        outlier_detection: true
+        outlier_method: IQR
+        outlier_threshold: 1.5
+
+    # 整数型特征配置
     integer_features:
-    - name: NSM
-      type: int
-      description: Numeric Sequential Minute (分钟序号)
-      range:
-      - 0
-      - 1440
-      handle_missing: interpolate
+      - name: NSM                               # 分钟序号
+        type: int
+        description: Numeric Sequential Minute
+        range: [0, 100000]                        # 取值范围 最大86000左右数据集
+        handle_missing: interpolate
+
+    # 类别型特征配置
     categorical_features:
-    - name: WeekStatus
-      type: category
-      categories:
-      - Weekday
-      - Weekend
-      encoding: onehot
-      handle_missing: mode
-    - name: Day_of_week
-      type: category
-      categories:
-      - Monday
-      - Tuesday
-      - Wednesday
-      - Thursday
-      - Friday
-      - Saturday
-      - Sunday
-      encoding: onehot
-      handle_missing: mode
-    - name: Load_Type
-      type: category
-      categories:
-      - Light_Load
-      - Medium_Load
-      - Maximum_Load
-      encoding: onehot
-      handle_missing: mode
+      - name: WeekStatus                        # 周内/周末状态
+        type: category
+        categories: [Weekday, Weekend]
+        encoding: onehot                        # 编码方式
+        handle_missing: mode                    # 缺失值处理方法
+
+      - name: Day_of_week                       # 星期几
+        type: category
+        categories: [Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday]
+        encoding: onehot
+        handle_missing: mode
+
+      - name: Load_Type                         # 负载类型
+        type: category
+        categories: [Light_Load, Medium_Load, Maximum_Load]
+        encoding: onehot
+        handle_missing: mode
+
+  # 数据预处理配置
   preprocessing:
-    handle_missing: interpolate
-    outlier_detection: true
-    outlier_method: IQR
-    normalization: standard
+    handle_missing: interpolate                 # 默认缺失值处理方法
+    outlier_detection: true                     # 是否检测异常值
+    outlier_method: IQR                         # 默认异常值检测方法
+    normalization: standard                     # 默认标准化方法
+    
+    # 预处理步骤
     steps:
-    - name: handle_missing_values
-      enabled: true
-      order: 1
-    - name: handle_outliers
-      enabled: true
-      order: 2
-    - name: normalize_features
-      enabled: true
-      order: 3
-    - name: encode_categories
-      enabled: true
-      order: 4
+      - name: handle_missing_values             # 处理缺失值
+        enabled: true
+        order: 1
+      
+      - name: handle_outliers                   # 处理异常值
+        enabled: true
+        order: 2
+      
+      - name: normalize_features                # 特征标准化
+        enabled: true
+        order: 3
+      
+      - name: encode_categories                 # 类别编码
+        enabled: true
+        order: 4
+
+    # 数据验证配置
     validation:
-      check_missing: true
-      check_duplicates: true
-      check_data_types: true
-      check_value_ranges: true
-      check_categorical_values: true
+      check_missing: true                       # 检查缺失值
+      check_duplicates: true                    # 检查重复值
+      check_data_types: true                    # 检查数据类型
+      check_value_ranges: true                  # 检查取值范围
+      check_categorical_values: true            # 检查类别值
+
+  # 特征工程配置
   feature_engineering:
-    create_time_features: true
-    time_features:
-    - hour
-    - day_of_week
-    - month
-    - is_weekend
+    create_time_features: true                  # 是否创建时间特征
+    
+    # 时间特征配置
+    time_features: [hour, day_of_week, month, is_weekend]
+    
+    # 滑动窗口特征配置
     rolling_features:
-      window_sizes:
-      - 6
-      - 12
-      - 24
-      operations:
-      - mean
-      - std
-      - min
-      - max
+      window_sizes: [6, 12, 24]                # 窗口大小（小时）
+      operations: [mean, std, min, max]         # 统计操作
+    
+    # 滞后特征配置
     lag_features:
-      lag_hours:
-      - 1
-      - 2
-      - 3
-      - 6
-      - 12
-      - 24
+      lag_hours: [1, 2, 3, 6, 12, 24]          # 滞后时间（小时）
+
+# 模型配置
 model:
-  type: DQN
-  hidden_size:
-  - 256
-  - 128
-  - 64
-  learning_rate: 0.0005
-  gamma: 0.99
-  memory_size: 10000
-  batch_size: 64
-  epsilon_start: 1.0
-  epsilon_end: 0.01
-  epsilon_decay: 0.995
-  use_dueling: true
-  use_double: true
-  use_priority: false
+  type: DQN                                     # 模型类型
+  hidden_size: [256, 128, 64]                  # 隐藏层大小
+  learning_rate: 0.0005                        # 学习率
+  gamma: 0.99                                  # 折扣因子
+  memory_size: 10000                          # 经验回放缓冲区大小
+  batch_size: 64                              # 训练批次大小
+  epsilon_start: 1.0                          # 初始探索率
+  epsilon_end: 0.01                           # 最终探索率
+  epsilon_decay: 0.995                        # 探索率衰减系数
+  use_dueling: true                           # 是否使用Dueling DQN
+  use_double: true                            # 是否使用Double DQN
+  use_priority: false                         # 是否使用优先经验回放
+
+# 训练配置
 training:
-  epochs: 1000
-  max_steps: 500
-  eval_frequency: 10
-  save_frequency: 50
-  checkpoint_dir: checkpoints
-  log_dir: logs
-  early_stopping_patience: 20
-  load_checkpoint: false
-  tensorboard: true
-  log_level: INFO
+  epochs: 1000                                # 训练轮数
+  max_steps: 500                             # 每轮最大步数
+  eval_frequency: 10                         # 评估频率（轮数）
+  save_frequency: 50                         # 保存频率（轮数）
+  checkpoint_dir: checkpoints                # 检查点保存目录
+  log_dir: logs                             # 日志保存目录
+  early_stopping_patience: 20                # 早停耐心值
+  load_checkpoint: false                     # 是否加载已有检查点
+  tensorboard: true                         # 是否使用tensorboard
+  log_level: INFO                           # 日志级别
+
+# 强化学习环境配置
 environment:
-  state_size: 24
-  action_size: 100
-  reward_scale: 1.0
-  reward_shaping: true
-  done_penalty: -100
-  success_reward: 100
-  step_penalty: -1
-  max_power: 10000
-  min_power: 0
+  state_size: 24                            # 状态空间维度（特征数量）
+  action_size: 100                          # 动作空间维度（离散化程度）
+  max_power: 10000                         # 最大功率值（kW）
+  min_power: 0                             # 最小功率值（kW）
+  reward_scale: 1.0                        # 奖励缩放因子
+  reward_shaping: true                     # 是否使用奖励整形
+  done_penalty: -100                       # 失败惩罚值
+  success_reward: 100                      # 成功奖励值
+  step_penalty: -1                         # 每步惩罚值
+
+# 评估配置（新增）
+evaluation:
+  num_episodes: 100                         # 评估轮数
+  save_predictions: true                    # 是否保存预测结果
+  plot_results: true                       # 是否绘制结果图表
+  metrics: [mse, rmse, mae, mape]          # 评估指标
+  visualization:
+    plot_predictions: true                 # 是否绘制预测结果
+    plot_error_dist: true                 # 是否绘制误差分布
+    plot_training_curves: true            # 是否绘制训练曲线
