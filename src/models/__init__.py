@@ -7,7 +7,7 @@ Current User: zlbbbb
 from .networks import DuelingDQN, DQN
 from .agent import DQNAgent
 from .environment import SteelPowerEnv
-from .trainer import ModelTrainer
+
 from .evaluator import ModelEvaluator
 
 __all__ = [
@@ -15,6 +15,5 @@ __all__ = [
     'DQN',
     'DQNAgent',
     'SteelPowerEnv',
-    'ModelTrainer',
     'ModelEvaluator'
 ]
