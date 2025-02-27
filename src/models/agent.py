@@ -118,40 +118,40 @@ class DQNAgent:
             
         self.memory.append((state, action, reward, next_state, done))
         
-def select_action(self, 
-                 state: Union[np.ndarray, torch.Tensor],
-                 evaluate: bool = False) -> int:
-    """
-    选择动作
-    
-    Args:
-        state: 当前状态
-        evaluate: 是否处于评估模式
+    def select_action(self, 
+                    state: Union[np.ndarray, torch.Tensor],
+                    evaluate: bool = False) -> int:
+        """
+        选择动作
         
-    Returns:
-        选择的动作
-    """
-    if not evaluate and random.random() < self.epsilon:
-        return random.randrange(self.action_dim)
-        
-    with torch.no_grad():
-        if not isinstance(state, torch.Tensor):
-            state = torch.FloatTensor(state).to(self.device)
-        if state.dim() == 1:
-            state = state.unsqueeze(0)
+        Args:
+            state: 当前状态
+            evaluate: 是否处于评估模式
             
-        # 在评估模式下切换网络状态
-        if evaluate:
-            self.policy_net.eval_mode()
-        
-        q_values = self.policy_net(state)
-        
-        # 如果是在评估模式下，恢复训练模式
-        if evaluate:
-            self.policy_net.train_mode()
+        Returns:
+            选择的动作
+        """
+        if not evaluate and random.random() < self.epsilon:
+            return random.randrange(self.action_dim)
             
-        return q_values.max(1)[1].item()
+        with torch.no_grad():
+            if not isinstance(state, torch.Tensor):
+                state = torch.FloatTensor(state).to(self.device)
+            if state.dim() == 1:
+                state = state.unsqueeze(0)
+                
+            # 在评估模式下切换网络状态
+            if evaluate:
+                self.policy_net.eval_mode()
             
+            q_values = self.policy_net(state)
+            
+            # 如果是在评估模式下，恢复训练模式
+            if evaluate:
+                self.policy_net.train_mode()
+                
+            return q_values.max(1)[1].item()
+                
     def learn(self) -> Optional[float]:
         """从经验中学习"""
         if len(self.memory) < self.batch_size:

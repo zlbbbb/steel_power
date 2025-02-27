@@ -1,6 +1,6 @@
 """
 Neural Network Models for Steel Power Prediction
-Current Date and Time (UTC): 2025-02-27 10:38:22
+Current Date and Time (UTC): 2025-02-27 10:56:51
 Current User: zlbbbb
 """
 
@@ -16,6 +16,15 @@ class DQN(nn.Module):
                  action_dim: int,
                  hidden_sizes: List[int],
                  dropout_rate: float = 0.1):
+        """
+        初始化标准DQN网络
+        
+        Args:
+            state_dim: 状态空间维度
+            action_dim: 动作空间维度
+            hidden_sizes: 隐藏层大小列表
+            dropout_rate: Dropout比率
+        """
         super(DQN, self).__init__()
         
         layers = []
@@ -34,6 +43,15 @@ class DQN(nn.Module):
         self.network = nn.Sequential(*layers)
         
     def forward(self, x: torch.Tensor) -> torch.Tensor:
+        """
+        前向传播
+        
+        Args:
+            x: 输入状态张量
+            
+        Returns:
+            Q值张量
+        """
         if x.dim() == 1:
             x = x.unsqueeze(0)
         return self.network(x)
@@ -46,12 +64,21 @@ class DuelingDQN(nn.Module):
                  action_dim: int,
                  hidden_sizes: List[int],
                  dropout_rate: float = 0.1):
+        """
+        初始化Dueling DQN网络
+        
+        Args:
+            state_dim: 状态空间维度
+            action_dim: 动作空间维度
+            hidden_sizes: 隐藏层大小列表
+            dropout_rate: Dropout比率
+        """
         super(DuelingDQN, self).__init__()
         
         self.feature_layer = nn.Sequential(
             nn.Linear(state_dim, hidden_sizes[0]),
             nn.ReLU(),
-            nn.LayerNorm(hidden_sizes[0]),  # 使用LayerNorm
+            nn.LayerNorm(hidden_sizes[0]),
             nn.Dropout(dropout_rate)
         )
         
@@ -62,7 +89,7 @@ class DuelingDQN(nn.Module):
             value_layers.extend([
                 nn.Linear(current_dim, hidden_size),
                 nn.ReLU(),
-                nn.LayerNorm(hidden_size),  # 使用LayerNorm
+                nn.LayerNorm(hidden_size),
                 nn.Dropout(dropout_rate)
             ])
             current_dim = hidden_size
@@ -76,7 +103,7 @@ class DuelingDQN(nn.Module):
             advantage_layers.extend([
                 nn.Linear(current_dim, hidden_size),
                 nn.ReLU(),
-                nn.LayerNorm(hidden_size),  # 使用LayerNorm
+                nn.LayerNorm(hidden_size),
                 nn.Dropout(dropout_rate)
             ])
             current_dim = hidden_size
@@ -84,6 +111,15 @@ class DuelingDQN(nn.Module):
         self.advantage_stream = nn.Sequential(*advantage_layers)
         
     def forward(self, x: torch.Tensor) -> torch.Tensor:
+        """
+        前向传播
+        
+        Args:
+            x: 输入状态张量
+            
+        Returns:
+            Q值张量
+        """
         if x.dim() == 1:
             x = x.unsqueeze(0)
         features = self.feature_layer(x)
@@ -98,7 +134,18 @@ class DQNetwork(nn.Module):
                  state_dim: int,
                  action_dim: int,
                  hidden_sizes: List[int],
-                 use_dueling: bool = True):
+                 use_dueling: bool = True,
+                 dropout_rate: float = 0.1):
+        """
+        初始化DQN网络
+        
+        Args:
+            state_dim: 状态空间维度
+            action_dim: 动作空间维度
+            hidden_sizes: 隐藏层大小列表
+            use_dueling: 是否使用Dueling架构
+            dropout_rate: Dropout比率
+        """
         super(DQNetwork, self).__init__()
         
         self.state_dim = state_dim
@@ -107,24 +154,34 @@ class DQNetwork(nn.Module):
         
         # 选择网络类型
         if use_dueling:
-            self.network = DuelingDQN(state_dim, action_dim, hidden_sizes)
+            self.network = DuelingDQN(state_dim, action_dim, hidden_sizes, dropout_rate)
         else:
-            self.network = DQN(state_dim, action_dim, hidden_sizes)
+            self.network = DQN(state_dim, action_dim, hidden_sizes, dropout_rate)
             
         # 初始化权重
         self.apply(self._init_weights)
         
     def _init_weights(self, module):
+        """初始化网络权重"""
         if isinstance(module, nn.Linear):
             nn.init.kaiming_normal_(module.weight, mode='fan_in', nonlinearity='relu')
             if module.bias is not None:
                 nn.init.constant_(module.bias, 0)
                 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
+        """
+        前向传播
+        
+        Args:
+            x: 输入状态张量
+            
+        Returns:
+            Q值张量
+        """
         return self.network(x)
 
-if __name__ == "__main__":
-    # 测试代码
+def test_networks():
+    """测试网络实现"""
     state_dim = 10
     action_dim = 4
     hidden_sizes = [64, 64]
@@ -155,3 +212,6 @@ if __name__ == "__main__":
     print(f"批量样本输出形状: {y.shape}")
     
     print("\n测试完成!")
+
+if __name__ == "__main__":
+    test_networks()
