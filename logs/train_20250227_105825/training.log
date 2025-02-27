@@ -1,0 +1,46 @@
+2025-02-27 10:58:25,613 - train_20250227_105825 - INFO - Training started at 20250227_105825
+2025-02-27 10:58:25,617 - train_20250227_105825 - INFO - 环境创建成功
+2025-02-27 10:58:27,221 - train_20250227_105825 - INFO - 智能体创建成功
+2025-02-27 10:58:27,236 - train_20250227_105825 - INFO - 配置已保存至: logs\train_20250227_105825\config.yaml
+2025-02-27 10:58:27,237 - train_20250227_105825 - INFO - 开始训练...
+2025-02-27 10:58:27,238 - train_20250227_105825 - INFO - Episode: 0/1000, Reward: -74.04, Epsilon: 1.0000
+2025-02-27 10:58:27,250 - train_20250227_105825 - INFO - 模型已保存至: checkpoints\model_best.pth
+2025-02-27 10:58:27,255 - train_20250227_105825 - INFO - 模型已保存至: checkpoints\model_episode_0.pth
+2025-02-27 10:58:27,261 - train_20250227_105825 - INFO - 模型已保存至: checkpoints\model_best.pth
+2025-02-27 10:58:27,268 - train_20250227_105825 - INFO - 模型已保存至: checkpoints\model_best.pth
+2025-02-27 10:58:30,406 - train_20250227_105825 - INFO - 模型已保存至: checkpoints\model_best.pth
+2025-02-27 10:58:31,673 - train_20250227_105825 - INFO - 模型已保存至: checkpoints\model_best.pth
+2025-02-27 10:58:31,684 - train_20250227_105825 - INFO - 模型已保存至: checkpoints\model_episode_50.pth
+2025-02-27 10:58:32,710 - train_20250227_105825 - INFO - 模型已保存至: checkpoints\model_best.pth
+2025-02-27 10:58:37,255 - train_20250227_105825 - INFO - Episode: 100/1000, Reward: -71.59, Epsilon: 0.0214
+2025-02-27 10:58:37,265 - train_20250227_105825 - INFO - 模型已保存至: checkpoints\model_episode_100.pth
+2025-02-27 10:58:41,751 - train_20250227_105825 - INFO - 模型已保存至: checkpoints\model_episode_150.pth
+2025-02-27 10:58:42,960 - train_20250227_105825 - INFO - 模型已保存至: checkpoints\model_best.pth
+2025-02-27 10:58:47,227 - train_20250227_105825 - INFO - 模型已保存至: checkpoints\model_best.pth
+2025-02-27 10:58:52,405 - train_20250227_105825 - INFO - Episode: 200/1000, Reward: 1612.85, Epsilon: 0.0100
+2025-02-27 10:58:52,419 - train_20250227_105825 - INFO - 模型已保存至: checkpoints\model_episode_200.pth
+2025-02-27 10:59:01,742 - train_20250227_105825 - INFO - 模型已保存至: checkpoints\model_episode_250.pth
+2025-02-27 10:59:03,161 - train_20250227_105825 - INFO - 模型已保存至: checkpoints\model_best.pth
+2025-02-27 10:59:05,000 - train_20250227_105825 - INFO - 模型已保存至: checkpoints\model_best.pth
+2025-02-27 10:59:12,228 - train_20250227_105825 - INFO - Episode: 300/1000, Reward: -65.53, Epsilon: 0.0100
+2025-02-27 10:59:12,241 - train_20250227_105825 - INFO - 模型已保存至: checkpoints\model_episode_300.pth
+2025-02-27 10:59:21,667 - train_20250227_105825 - INFO - 模型已保存至: checkpoints\model_episode_350.pth
+2025-02-27 10:59:29,954 - train_20250227_105825 - INFO - Episode: 400/1000, Reward: -60.38, Epsilon: 0.0100
+2025-02-27 10:59:29,967 - train_20250227_105825 - INFO - 模型已保存至: checkpoints\model_episode_400.pth
+2025-02-27 10:59:38,890 - train_20250227_105825 - INFO - 模型已保存至: checkpoints\model_episode_450.pth
+2025-02-27 10:59:47,864 - train_20250227_105825 - INFO - Episode: 500/1000, Reward: 2270.79, Epsilon: 0.0100
+2025-02-27 10:59:47,878 - train_20250227_105825 - INFO - 模型已保存至: checkpoints\model_episode_500.pth
+2025-02-27 10:59:56,922 - train_20250227_105825 - INFO - 模型已保存至: checkpoints\model_episode_550.pth
+2025-02-27 11:00:05,441 - train_20250227_105825 - INFO - Episode: 600/1000, Reward: -75.02, Epsilon: 0.0100
+2025-02-27 11:00:05,453 - train_20250227_105825 - INFO - 模型已保存至: checkpoints\model_episode_600.pth
+2025-02-27 11:00:14,488 - train_20250227_105825 - INFO - 模型已保存至: checkpoints\model_episode_650.pth
+2025-02-27 11:00:23,534 - train_20250227_105825 - INFO - Episode: 700/1000, Reward: 365.15, Epsilon: 0.0100
+2025-02-27 11:00:23,544 - train_20250227_105825 - INFO - 模型已保存至: checkpoints\model_episode_700.pth
+2025-02-27 11:00:30,996 - train_20250227_105825 - INFO - 模型已保存至: checkpoints\model_episode_750.pth
+2025-02-27 11:00:40,402 - train_20250227_105825 - INFO - Episode: 800/1000, Reward: 353.41, Epsilon: 0.0100
+2025-02-27 11:00:40,415 - train_20250227_105825 - INFO - 模型已保存至: checkpoints\model_episode_800.pth
+2025-02-27 11:00:47,025 - train_20250227_105825 - INFO - 模型已保存至: checkpoints\model_episode_850.pth
+2025-02-27 11:00:53,140 - train_20250227_105825 - INFO - Episode: 900/1000, Reward: -112.95, Epsilon: 0.0100
+2025-02-27 11:00:53,156 - train_20250227_105825 - INFO - 模型已保存至: checkpoints\model_episode_900.pth
+2025-02-27 11:01:00,528 - train_20250227_105825 - INFO - 模型已保存至: checkpoints\model_episode_950.pth
+2025-02-27 11:01:07,763 - train_20250227_105825 - INFO - 训练完成！

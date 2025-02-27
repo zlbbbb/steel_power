@@ -1,0 +1,11 @@
+2025-02-27 00:11:17,922 - train_20250227_001117 - INFO - Training started at 20250227_001117
+2025-02-27 00:11:17,924 - train_20250227_001117 - INFO - 环境创建成功
+2025-02-27 00:11:19,436 - train_20250227_001117 - INFO - 智能体创建成功
+2025-02-27 00:11:19,448 - train_20250227_001117 - INFO - 配置已保存至: logs\train_20250227_001117\config.yaml
+2025-02-27 00:11:19,449 - train_20250227_001117 - INFO - 开始训练...
+2025-02-27 00:11:19,449 - train_20250227_001117 - INFO - Episode: 0/1000, Reward: -77.76, Epsilon: 1.0000
+2025-02-27 00:11:19,475 - train_20250227_001117 - INFO - 模型已保存至: checkpoints\model_best.pth
+2025-02-27 00:11:19,484 - train_20250227_001117 - INFO - 模型已保存至: checkpoints\model_episode_0.pth
+2025-02-27 00:11:19,494 - train_20250227_001117 - INFO - 模型已保存至: checkpoints\model_best.pth
+2025-02-27 00:11:19,503 - train_20250227_001117 - INFO - 模型已保存至: checkpoints\model_best.pth
+2025-02-27 00:11:19,513 - train_20250227_001117 - INFO - 模型已保存至: checkpoints\model_best.pth

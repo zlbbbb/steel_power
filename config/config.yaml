@@ -159,8 +159,8 @@ training:
     - actual_power
     - prediction_error
 environment:
-  state_size: 24
-  action_size: 100
+  state_dim: 24
+  action_dim: 100
   power:
     max: 10000
     min: 0
