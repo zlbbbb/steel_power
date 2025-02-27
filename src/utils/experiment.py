@@ -52,15 +52,20 @@ class ExperimentManager:
         # 设置实验目录
         if exp_dir is None:
             exp_dir = Path("logs")
-        self.exp_dir = exp_dir / f"{exp_name}_{self.timestamp}"
-        self.exp_dir.mkdir(parents=True, exist_ok=True)
+        self.exp_dir = exp_dir
+        # 为每次训练创建唯一的子目录
+        self.run_dir = self.exp_dir / f"{exp_name}_{self.timestamp}"
+        self.run_dir.mkdir(parents=True, exist_ok=True)
         
-        # 创建子目录
-        self.checkpoints_dir = self.exp_dir / "checkpoints"
+        # 创建子目录结构
+        self.checkpoints_dir = self.run_dir / "checkpoints"
         self.checkpoints_dir.mkdir(exist_ok=True)
-        self.plots_dir = self.exp_dir / "plots"
+        
+        self.plots_dir = self.run_dir / "plots"
         self.plots_dir.mkdir(exist_ok=True)
         
+        self.tensorboard_dir = self.run_dir / "tensorboard"
+        self.tensorboard_dir.mkdir(exist_ok=True)
         # 保存配置
         self.save_config()
         
@@ -73,7 +78,7 @@ class ExperimentManager:
         
         # 设置可视化器
         self.visualizer = TrainingVisualizer(
-            log_dir=self.exp_dir,
+            log_dir=self.run_dir,
             config=config
         )
         
@@ -82,11 +87,12 @@ class ExperimentManager:
         
         # 设置 TensorBoard
         if use_tensorboard:
-            self.writer = SummaryWriter(self.exp_dir / "tensorboard")
+            self.writer = SummaryWriter(self.tensorboard_dir)
         else:
             self.writer = None
             
         self.logger.info(f"实验 '{exp_name}' 初始化完成")
+        self.logger.info(f"实验运行目录: {self.run_dir}")
         
     def save_config(self):
         """保存配置文件"""

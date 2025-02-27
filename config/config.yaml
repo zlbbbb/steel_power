@@ -1,13 +1,13 @@
 # Steel Power Prediction Project Configuration
-# Current Date and Time (UTC): 2025-02-26 14:45:24
+# Current Date and Time (UTC): 2025-02-27 08:43:45
 # Current User: XC
 
 project:
   name: steel_power_prediction
-  version: 0.1.0
+  version: 0.2.0
   description: 基于深度强化学习的钢铁厂电力需求预测系统
   created_at: '2025-02-25 05:31:30'
-  updated_at: '2025-02-26 14:45:24'
+  updated_at: '2025-02-27 08:43:45'
   created_by: zlbbbb
   updated_by: XC
 data:
@@ -95,25 +95,25 @@ model:
   type: DQN
   network:
     hidden_size:
+    - 512
     - 256
     - 128
-    - 64
-    dropout: 0.1
+    dropout: 0.2
     activation: relu
     batch_norm: true
     initialization: kaiming
   dqn:
-    learning_rate: 0.0005
+    learning_rate: 0.001
     gamma: 0.99
-    memory_size: 10000
-    batch_size: 64
+    memory_size: 20000
+    batch_size: 128
     epsilon_start: 1.0
     epsilon_end: 0.01
     epsilon_decay: 0.995
     target_update: 10
     use_dueling: true
     use_double: true
-    use_priority: false
+    use_priority: true
     clip_grad_norm: 1.0
     optimizer: adam
     scheduler:
@@ -121,6 +121,14 @@ model:
       patience: 5
       factor: 0.5
       min_lr: 1.0e-05
+  optimizer:
+    type: adam
+    learning_rate: 0.001
+    weight_decay: 0.0001
+    amsgrad: true
+    betas:
+    - 0.9
+    - 0.999
   learning_rate: 0.0005
   batch_size: 64
 training:
@@ -130,7 +138,11 @@ training:
   save_frequency: 50
   seed: 42
   device: cuda
+  cuda_device: 0
+  use_multi_gpu: true
   num_workers: 4
+  pin_memory: true
+  analysis_frequency: 10
   early_stopping:
     enabled: true
     patience: 20
@@ -158,6 +170,23 @@ training:
     - predicted_power
     - actual_power
     - prediction_error
+    - gpu_memory_allocated
+    - gpu_memory_cached
+    - training_speed
+  analysis_metrics:
+  - loss_trend
+  - reward_trend
+  - prediction_accuracy
+  - gpu_efficiency
+  - learning_rate_analysis
+  - memory_usage
+  performance_monitoring:
+    enabled: true
+    gpu_memory_tracking: true
+    timing_analysis: true
+    resource_usage: true
+    profile_execution: false
+    memory_profiling: true
 environment:
   state_dim: 24
   action_dim: 100
@@ -222,9 +251,23 @@ evaluation:
         enabled: true
         filename: feature_importance.png
         method: shap
+  analysis:
+    statistical_tests: true
+    correlation_analysis: true
+    residual_analysis: true
+    error_distribution: true
+    performance_profiling: true
 debug:
   enabled: false
   verbose: false
   profile: false
   save_memory_usage: false
   max_warnings: 100
+  debug_level: 0
+  save_gradients: false
+  track_nan_inf: true
+  profiler:
+    enabled: false
+    warmup: 5
+    active: 20
+    repeat: 2

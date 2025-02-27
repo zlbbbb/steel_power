@@ -1,0 +1,22 @@
+2025-02-27 16:25:11,661 - train_20250227_162511 - INFO - Training started at 20250227_162511
+2025-02-27 16:25:11,666 - train_20250227_162511 - INFO - 环境创建成功
+2025-02-27 16:25:14,515 - train_20250227_162511 - INFO - 智能体创建成功
+2025-02-27 16:25:14,533 - train_20250227_162511 - INFO - 配置已保存至: logs\train_20250227_162511\config.yaml
+2025-02-27 16:25:14,534 - train_20250227_162511 - INFO - 开始训练...
+2025-02-27 16:25:14,585 - train_20250227_162511 - INFO - Episode: 0/300, Reward: 179.47, Loss: 0.000000, Epsilon: 1.0000
+2025-02-27 16:25:17,613 - train_20250227_162511 - INFO - 模型已保存至: checkpoints\model_best.pth
+2025-02-27 16:25:17,622 - train_20250227_162511 - INFO - 模型已保存至: checkpoints\model_episode_0.pth
+2025-02-27 16:25:24,916 - train_20250227_162511 - INFO - 模型已保存至: checkpoints\model_best.pth
+2025-02-27 16:25:25,554 - train_20250227_162511 - INFO - 模型已保存至: checkpoints\model_best.pth
+2025-02-27 16:25:27,384 - train_20250227_162511 - INFO - 模型已保存至: checkpoints\model_best.pth
+2025-02-27 16:25:37,548 - train_20250227_162511 - INFO - 模型已保存至: checkpoints\model_best.pth
+2025-02-27 16:25:38,807 - train_20250227_162511 - INFO - 模型已保存至: checkpoints\model_best.pth
+2025-02-27 16:25:51,671 - train_20250227_162511 - INFO - 模型已保存至: checkpoints\model_episode_50.pth
+2025-02-27 16:26:23,592 - train_20250227_162511 - INFO - Episode: 100/300, Reward: -3018.11, Loss: 31.833352, Epsilon: 0.0100
+2025-02-27 16:26:26,102 - train_20250227_162511 - INFO - 模型已保存至: checkpoints\model_episode_100.pth
+2025-02-27 16:26:59,204 - train_20250227_162511 - INFO - 模型已保存至: checkpoints\model_episode_150.pth
+2025-02-27 16:27:32,045 - train_20250227_162511 - INFO - Episode: 200/300, Reward: 1005.59, Loss: 34.226689, Epsilon: 0.0100
+2025-02-27 16:27:34,571 - train_20250227_162511 - INFO - 模型已保存至: checkpoints\model_episode_200.pth
+2025-02-27 16:28:07,158 - train_20250227_162511 - INFO - 模型已保存至: checkpoints\model_episode_250.pth
+2025-02-27 16:28:23,750 - train_20250227_162511 - INFO - 模型已保存至: checkpoints\model_best.pth
+2025-02-27 16:28:40,953 - train_20250227_162511 - INFO - 训练完成！

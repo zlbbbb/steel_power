@@ -1,0 +1,20 @@
+2025-02-27 16:43:57,261 - train_20250227_164357 - INFO - Training started at 20250227_164357
+2025-02-27 16:43:57,264 - train_20250227_164357 - INFO - 环境创建成功
+2025-02-27 16:43:59,810 - train_20250227_164357 - INFO - 智能体创建成功
+2025-02-27 16:43:59,836 - train_20250227_164357 - INFO - 配置已保存至: logs\train_20250227_164357\config.yaml
+2025-02-27 16:43:59,836 - train_20250227_164357 - INFO - 开始训练...
+2025-02-27 16:43:59,885 - train_20250227_164357 - INFO - Episode: 0/300, Reward: 281.27, Loss: 0.000000, Epsilon: 1.0000
+2025-02-27 16:44:02,752 - train_20250227_164357 - INFO - 模型已保存至: checkpoints\model_best.pth
+2025-02-27 16:44:02,760 - train_20250227_164357 - INFO - 模型已保存至: checkpoints\model_episode_0.pth
+2025-02-27 16:44:10,430 - train_20250227_164357 - INFO - 模型已保存至: checkpoints\model_best.pth
+2025-02-27 16:44:23,429 - train_20250227_164357 - INFO - 模型已保存至: checkpoints\model_best.pth
+2025-02-27 16:44:26,741 - train_20250227_164357 - INFO - 模型已保存至: checkpoints\model_best.pth
+2025-02-27 16:44:28,725 - train_20250227_164357 - INFO - 模型已保存至: checkpoints\model_best.pth
+2025-02-27 16:44:35,189 - train_20250227_164357 - INFO - 模型已保存至: checkpoints\model_episode_50.pth
+2025-02-27 16:45:07,112 - train_20250227_164357 - INFO - Episode: 100/300, Reward: -3561.54, Loss: 36.123227, Epsilon: 0.0100
+2025-02-27 16:45:09,441 - train_20250227_164357 - INFO - 模型已保存至: checkpoints\model_episode_100.pth
+2025-02-27 16:45:41,186 - train_20250227_164357 - INFO - 模型已保存至: checkpoints\model_episode_150.pth
+2025-02-27 16:46:12,973 - train_20250227_164357 - INFO - Episode: 200/300, Reward: 2462.04, Loss: 36.108907, Epsilon: 0.0100
+2025-02-27 16:46:15,355 - train_20250227_164357 - INFO - 模型已保存至: checkpoints\model_episode_200.pth
+2025-02-27 16:46:47,258 - train_20250227_164357 - INFO - 模型已保存至: checkpoints\model_episode_250.pth
+2025-02-27 16:47:20,584 - train_20250227_164357 - INFO - 训练完成！
