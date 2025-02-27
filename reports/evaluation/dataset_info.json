@@ -1,0 +1,38 @@
+{
+    "dataset_sizes": {
+        "train": 24528,
+        "validation": 5255,
+        "test": 5257
+    },
+    "feature_info": {
+        "available_features": [
+            "Usage_kWh",
+            "Lagging_Current_Reactive.Power_kVarh",
+            "Leading_Current_Reactive_Power_kVarh",
+            "CO2(tCO2)",
+            "Lagging_Current_Power_Factor",
+            "Leading_Current_Power_Factor"
+        ],
+        "missing_features": [
+            "WeekStatus",
+            "Day_of_week",
+            "Load_Type"
+        ],
+        "feature_dim": 6
+    },
+    "data_shape": {
+        "train": [
+            24528,
+            7
+        ],
+        "validation": [
+            5255,
+            7
+        ],
+        "test": [
+            5257,
+            7
+        ]
+    },
+    "timestamp": "2025-02-27 17:47:52"
+}
