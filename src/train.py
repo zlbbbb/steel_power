@@ -25,6 +25,7 @@ if str(project_root) not in sys.path:
 from src.models.environment import SteelPowerEnv
 from src.models.agent import DQNAgent
 from src.utils.logger import ExperimentLogger
+from src.utils.visualizer import TrainingVisualizer
 
 class Trainer:
     def __init__(self, config: Dict[str, Any]):
@@ -46,6 +47,9 @@ class Trainer:
         
         # 设置训练组件
         self.setup_components()
+
+        # 初始化可视化器
+        self.visualizer = TrainingVisualizer(self.log_dir, self.config)
         
         # 保存初始配置
         self.save_config()
@@ -145,6 +149,8 @@ class Trainer:
         for episode in range(total_episodes):
             state, _ = self.env.reset()
             episode_reward = 0
+            episode_loss = 0
+            n_steps = 0
             
             for step in range(max_steps):
                 # 选择动作
@@ -158,31 +164,63 @@ class Trainer:
                 
                 # 更新智能体
                 loss = self.agent.learn()
+
+                if loss is not None:
+                    episode_loss += loss
                 
                 episode_reward += reward
                 state = next_state
+                n_steps += 1
+
+                # 更新可视化指标
+                if 'power_value' in info and 'target_power' in info:
+                    metrics = {
+                        'predicted_power': info['power_value'],
+                        'actual_power': info['target_power'],
+                        'prediction_error': abs(info['power_value'] - info['target_power'])
+                    }
+                    self.visualizer.update_metrics(episode * max_steps + step, metrics)
+
+            # 计算平均损失
+            avg_loss = episode_loss / n_steps if n_steps > 0 else 0
+
+            # 更新训练指标
+            metrics = {
+                'episode_reward': episode_reward,
+                'loss': avg_loss,
+                'epsilon': self.agent.epsilon
+            }
+            self.visualizer.update_metrics(episode, metrics)
                 
-                if done or truncated:
-                    break
-            
-            # 日志记录
+            # 日志记录和可视化
             if episode % self.config['training']['logging']['log_frequency'] == 0:
                 self.logger.info(
                     f"Episode: {episode}/{total_episodes}, "
                     f"Reward: {episode_reward:.2f}, "
+                    f"Loss: {avg_loss:.6f}, "
                     f"Epsilon: {self.agent.epsilon:.4f}"
                 )
-            
+                # 绘制训练曲线
+                self.visualizer.plot_training_curves()
+                self.visualizer.plot_power_prediction()
+                self.visualizer.plot_error_distribution()
+
             # 保存最佳模型
-            if self.config['training']['checkpoint']['save_best'] and episode_reward > best_reward:
+            if episode_reward > best_reward:
                 best_reward = episode_reward
                 self.save_model('best')
                 
             # 定期保存模型
-            if self.config['training']['checkpoint']['enabled'] and \
-               episode % self.config['training']['checkpoint']['save_frequency'] == 0:
+            if episode % self.config['training']['checkpoint']['save_frequency'] == 0:
                 self.save_model(f"episode_{episode}")
                 
+                
+        # 训练结束，保存最终可视化结果
+        self.visualizer.plot_training_curves()
+        self.visualizer.plot_power_prediction()
+        self.visualizer.plot_error_distribution()
+        self.visualizer.close()
+        
         self.logger.info("训练完成！")
         
     def save_model(self, tag: str):

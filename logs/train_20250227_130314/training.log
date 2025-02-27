@@ -1,0 +1,24 @@
+2025-02-27 13:03:14,081 - train_20250227_130314 - INFO - Training started at 20250227_130314
+2025-02-27 13:03:14,084 - train_20250227_130314 - INFO - 环境创建成功
+2025-02-27 13:03:16,567 - train_20250227_130314 - INFO - 智能体创建成功
+2025-02-27 13:03:16,585 - train_20250227_130314 - INFO - 配置已保存至: logs\train_20250227_130314\config.yaml
+2025-02-27 13:03:16,586 - train_20250227_130314 - INFO - 开始训练...
+2025-02-27 13:03:16,633 - train_20250227_130314 - INFO - Episode: 0/300, Reward: -23.18, Loss: 0.000000, Epsilon: 1.0000
+2025-02-27 13:03:19,121 - train_20250227_130314 - INFO - 模型已保存至: checkpoints\model_best.pth
+2025-02-27 13:03:19,126 - train_20250227_130314 - INFO - 模型已保存至: checkpoints\model_episode_0.pth
+2025-02-27 13:03:22,579 - train_20250227_130314 - INFO - 模型已保存至: checkpoints\model_best.pth
+2025-02-27 13:03:26,195 - train_20250227_130314 - INFO - 模型已保存至: checkpoints\model_best.pth
+2025-02-27 13:03:34,722 - train_20250227_130314 - INFO - 模型已保存至: checkpoints\model_best.pth
+2025-02-27 13:03:35,365 - train_20250227_130314 - INFO - 模型已保存至: checkpoints\model_best.pth
+2025-02-27 13:03:44,586 - train_20250227_130314 - INFO - 模型已保存至: checkpoints\model_best.pth
+2025-02-27 13:03:50,869 - train_20250227_130314 - INFO - 模型已保存至: checkpoints\model_best.pth
+2025-02-27 13:03:53,236 - train_20250227_130314 - INFO - 模型已保存至: checkpoints\model_episode_50.pth
+2025-02-27 13:04:16,063 - train_20250227_130314 - INFO - 模型已保存至: checkpoints\model_best.pth
+2025-02-27 13:04:23,945 - train_20250227_130314 - INFO - Episode: 100/300, Reward: -3039.32, Loss: 36.217799, Epsilon: 0.0100
+2025-02-27 13:04:26,100 - train_20250227_130314 - INFO - 模型已保存至: checkpoints\model_episode_100.pth
+2025-02-27 13:04:26,760 - train_20250227_130314 - INFO - 模型已保存至: checkpoints\model_best.pth
+2025-02-27 13:04:56,930 - train_20250227_130314 - INFO - 模型已保存至: checkpoints\model_episode_150.pth
+2025-02-27 13:05:26,888 - train_20250227_130314 - INFO - Episode: 200/300, Reward: 4623.31, Loss: 35.514783, Epsilon: 0.0100
+2025-02-27 13:05:29,065 - train_20250227_130314 - INFO - 模型已保存至: checkpoints\model_episode_200.pth
+2025-02-27 13:05:58,774 - train_20250227_130314 - INFO - 模型已保存至: checkpoints\model_episode_250.pth
+2025-02-27 13:06:30,297 - train_20250227_130314 - INFO - 训练完成！

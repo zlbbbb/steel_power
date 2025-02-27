@@ -124,8 +124,8 @@ model:
   learning_rate: 0.0005
   batch_size: 64
 training:
-  epochs: 1000
-  max_steps: 500
+  epochs: 300
+  max_steps: 50
   eval_frequency: 10
   save_frequency: 50
   seed: 42

@@ -1,2 +1,4 @@
 2025-02-26 22:32:14 - experiment_test_experiment - [0;32mINFO[0m - [0;32m配置已保存至: logs\test_experiment\config.yaml[0m
 2025-02-26 22:32:14 - experiment_test_experiment - [0;32mINFO[0m - [0;32mStep 1: loss: 0.1000, accuracy: 0.9500[0m
+2025-02-27 11:13:57 - experiment_test_experiment - [0;32mINFO[0m - [0;32m配置已保存至: logs\test_experiment\config.yaml[0m
+2025-02-27 11:13:57 - experiment_test_experiment - [0;32mINFO[0m - [0;32mStep 1: loss: 0.1000, accuracy: 0.9500[0m
